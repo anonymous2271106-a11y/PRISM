@@ -61,7 +61,16 @@
 
     <h2>Abstract</h2>
     <p>
-      We present PRISM, a single-pass real-time imitation learning policy that combines batch-global Rejection Sampling IMLE with temporal attention over multisensory histories (RGB, depth, tactile, proprioception, audio). PRISM matches or surpasses state-of-the-art diffusion and flow-based policies on CALVIN, MetaWorld, Robomimic, and real-world loco-manipulation tasks, while being 50× faster at inference and robust to partial modality dropouts. PRISM runs at 30Hz with smooth, multimodal trajectory generation on a Unitree Go2 + D1 arm robot.
+      Robotic imitation learning typically requires models that capture multimodal action distributions while operating in real-time control rates and accommodating
+multiple sensing modalities. Although recent generative approaches such as diffusion models, flow matching, and Implicit Maximum Likelihood Estimation
+(IMLE) have achieved promising results in this domain, they satisfy only a subset of these requirements. To satisfy these requirements, we introduce PRISM, based
+on a batch-global rejection-sampling variant of IMLE. PRISM is a single-pass policy that couples a temporal multisensory encoder (e.g, RGB, Depth, tactile,
+audio, proprioception) with a linear-attention generator using a Performer architecture. We validate on MetaWorld, CALVIN, Robomimic, and a real hardware
+suite using a Unitree GO2 with a 7-DoF arm, wrist and shoulder RGB, tactile, audio, and proprioception sensors. PRISM matches or outperforms diffusion,
+flow-matching, and prior IMLE policies in terms of task success rates, robustness, and sample efficiency. In CALVIN with 10% of the data, PRISM improves
+the success rate by ∼10% over IMLE, ∼20% over flow matching, and ∼25% over diffusion, while reducing the jerk by about 20×. On MetaWorld, PRISM is 5-12% on Hard/Very-Hard splits over diffusion and flow baselines. Real-world
+loco-manipulation shows 10–25% higher success and maintains faster inference compared to diffusion policy. These results position PRISM as a fast, accurate,
+and multisensory imitation policy that retains multimodal action coverage without iterative sampling.
     </p>
 
     <h2>Method Overview</h2>
