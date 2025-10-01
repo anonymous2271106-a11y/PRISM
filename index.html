@@ -2,115 +2,280 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex" />
-  <title>PRISM: Performer RS-IMLE for Multisensory Imitation Learning</title>
+  <title>PRISM: Performer RS‑IMLE for Multisensory Imitation Learning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
+    /* ---------- Design Tokens ---------- */
+    :root {
+      --bg: #0b1020;              /* page background */
+      --bg-2: #0f1630;            /* section background */
+      --panel: rgba(255,255,255,.06); /* glass panels */
+      --text: #e8ecf3;            /* main text */
+      --muted: #9db0ce;           /* secondary text */
+      --line: rgba(255,255,255,.12);
+      --accent: #7aa2ff;          /* primary accent */
+      --accent-2: #b37cff;        /* secondary accent */
+      --success: #4fd1c5;
+      --shadow: 0 8px 24px rgba(0,0,0,.35);
+      --radius: 16px;
+      --radius-lg: 22px;
+      --maxw: 1100px;
+    }
+    @media (prefers-color-scheme: light) {
+      :root {
+        --bg: #f7f9ff;
+        --bg-2: #ffffff;
+        --panel: rgba(20, 23, 40, .06);
+        --text: #0e1a2b;
+        --muted: #5a6a89;
+        --line: rgba(24, 32, 56, .12);
+        --shadow: 0 8px 24px rgba(24,32,56,.12);
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 2rem;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(122,162,255,.25), transparent 60%),
+        radial-gradient(900px 600px at 90% -20%, rgba(179,124,255,.20), transparent 50%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg) 50%, var(--bg-2) 100%);
+      background-attachment: fixed;
       line-height: 1.6;
-      background: #f9f9f9;
-      color: #333;
     }
-    h1, h2 {
-      color: #111;
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    /* ---------- Top Navigation ---------- */
+    .nav-wrap {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(160%) blur(8px);
+      background: linear-gradient(180deg, rgba(10,14,30,.8), rgba(10,14,30,.35));
+      border-bottom: 1px solid var(--line);
     }
-    .container {
-      max-width: 960px;
-      margin: auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
-    .video-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    .nav {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .75rem 1rem;
       gap: 1rem;
     }
-    video, iframe {
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
+    .brand { display:flex; align-items:center; gap:.75rem; font-weight:800; letter-spacing:.2px; }
+    .brand i { color: var(--accent); }
+    .nav-links { display:flex; flex-wrap:wrap; gap:.5rem; }
+    .pill {
+      display:inline-flex; align-items:center; gap:.5rem;
+      padding: .55rem .9rem; border:1px solid var(--line);
+      background: var(--panel); border-radius: 999px; font-weight:600; font-size:.95rem;
+      transition: transform .12s ease, box-shadow .12s ease, background .2s ease;
     }
-    img {
-      max-width: 100%;
-      border-radius: 6px;
+    .pill:hover { transform: translateY(-1px); box-shadow: var(--shadow); text-decoration:none; }
+    .pill i { font-size: .95rem; }
+    /* ---------- Hero ---------- */
+    .hero {
+      max-width: var(--maxw);
+      margin: 2.2rem auto 1.2rem; padding: 1.2rem;
     }
+    .hero-card {
+      position: relative; overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: clamp(1.2rem, 2.5vw, 2rem);
+      isolation: isolate;
+    }
+    .hero-card::before {
+      content:""; position:absolute; inset:-1px;
+      background: conic-gradient(from 180deg at 50% 50%, rgba(122,162,255,.35), rgba(179,124,255,.35), rgba(79,209,197,.35), rgba(122,162,255,.35));
+      filter: blur(28px); opacity:.25; z-index:-1;
+    }
+    .title { font-size: clamp(1.8rem, 3.2vw, 2.6rem); font-weight: 800; letter-spacing:.2px; margin: .2rem 0 .4rem; }
+    .subtitle { color: var(--muted); font-weight:600; margin-bottom: .8rem; }
+    .badges { display:flex; flex-wrap:wrap; gap:.5rem; margin-top:.25rem; }
+    .badge { font-size:.78rem; letter-spacing:.2px; padding:.35rem .6rem; border-radius:999px; background: rgba(122,162,255,.1); border:1px solid var(--line); }
+    /* ---------- Metrics strip ---------- */
+    .metrics { display:grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap:.75rem; margin-top: 1rem; }
+    .metric { background: var(--panel); border:1px solid var(--line); border-radius: 12px; padding:.9rem; text-align:center; }
+    .metric .n { font-weight:800; font-size:1.3rem; }
+    .metric .l { color: var(--muted); font-size:.8rem; }
+    /* ---------- Sections ---------- */
+    .section { max-width: var(--maxw); margin: 1.4rem auto; padding: 0 1rem; }
+    .h2 { display:flex; align-items:center; gap:.6rem; font-size:1.2rem; font-weight:800; letter-spacing:.3px; margin:1.2rem 0 .6rem; }
+    .h2 i { color: var(--accent-2); }
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: clamp(1rem, 1.8vw, 1.4rem);
+      box-shadow: var(--shadow);
+    }
+    figure { margin: 0; }
+    figure img, video, iframe { width: 100%; border-radius: 12px; display:block; }
+    figcaption { margin-top: .5rem; color: var(--muted); font-size: .9rem; text-align:center; }
+    .grid { display:grid; gap: 1rem; }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    @media (max-width: 900px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .metrics { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    }
+    /* ---------- Video cards ---------- */
+    .video-card { position:relative; overflow:hidden; border-radius:12px; border:1px solid var(--line); background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); box-shadow:var(--shadow); }
+    .video-card video { display:block; width:100%; height:auto; }
+    .vcap { padding:.6rem .8rem; font-size:.9rem; color: var(--muted); border-top:1px solid var(--line); }
+    /* ---------- Code block with copy ---------- */
     pre {
-      background: #eee;
-      padding: 1rem;
-      border-radius: 6px;
-      overflow-x: auto;
+      margin: 0; overflow-x: auto; padding: 1rem 1.2rem; border-radius: 12px; border:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(10,14,30,.85), rgba(14,18,36,.85)); color: #e8edf8; font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size: .9rem;
     }
-    a {
-      color: #0077cc;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
+    .codebar { display:flex; align-items:center; justify-content:space-between; margin-bottom:.6rem; }
+    .codebar .label { font-weight:800; letter-spacing:.3px; }
+    .copy-btn { appearance:none; border:1px solid var(--line); background: var(--panel); color: var(--text); padding:.45rem .7rem; border-radius:10px; font-weight:700; cursor:pointer; }
+    .copy-btn:hover { box-shadow: var(--shadow); }
+    /* ---------- Footer ---------- */
+    .footer { max-width: var(--maxw); margin: 2rem auto; padding: 1rem; color: var(--muted); border-top: 1px dashed var(--line); text-align:center; }
+    /* smooth scroll for internal anchors */
+    html { scroll-behavior: smooth; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>PRISM: Performer RS-IMLE for Multisensory Imitation Learning</h1>
-    <p><strong>Anonymous Submission </strong></p>
-
-    <h2>Abstract</h2>
-    <p>
-      Robotic imitation learning typically requires models that capture multimodal action distributions while operating in real-time control rates and accommodating
-multiple sensing modalities. Although recent generative approaches such as diffusion models, flow matching, and Implicit Maximum Likelihood Estimation
-(IMLE) have achieved promising results in this domain, they satisfy only a subset of these requirements. To satisfy these requirements, we introduce PRISM, based
-on a batch-global rejection-sampling variant of IMLE. PRISM is a single-pass policy that couples a temporal multisensory encoder (e.g, RGB, Depth, tactile,
-audio, proprioception) with a linear-attention generator using a Performer architecture. We validate on MetaWorld, CALVIN, Robomimic, and a real hardware
-suite using a Unitree GO2 with a 7-DoF arm, wrist and shoulder RGB, tactile, audio, and proprioception sensors. PRISM matches or outperforms diffusion,
-flow-matching, and prior IMLE policies in terms of task success rates, robustness, and sample efficiency. In CALVIN with 10% of the data, PRISM improves
-the success rate by ∼10% over IMLE, ∼20% over flow matching, and ∼25% over diffusion, while reducing the jerk by about 20×. On MetaWorld, PRISM is 5-12% on Hard/Very-Hard splits over diffusion and flow baselines. Real-world
-loco-manipulation shows 10–25% higher success and maintains faster inference compared to diffusion policy. These results position PRISM as a fast, accurate,
-and multisensory imitation policy that retains multimodal action coverage without iterative sampling.
-    </p>
-
-    <h2>Method Overview</h2>
-    <img src="static/figure1.png" alt="PRISM model overview figure" />
-
-    <h2>Simulation and Real-World Videos</h2>
-    <div class="video-grid">
-      <!-- Replace these with your actual local file paths or YouTube embeds -->
-      <video controls>
-        <source src="static/demo_simulation.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-
-      <video controls>
-        <source src="static/demo_realworld1.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-
-      <!-- Optional YouTube embed -->
-      <!--
-      <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" frameborder="0" allowfullscreen></iframe>
-      -->
+  <!-- NAV -->
+  <div class="nav-wrap">
+    <nav class="nav" aria-label="Main">
+      <div class="brand">
+        <i class="fa-solid fa-gem"></i>
+        <span>PRISM</span>
+      </div>
+      <div class="nav-links">
+        <!--<a class="pill" href="#abstract"><i class="fa-regular fa-file-lines"></i> Abstract</a>-->
+        <!--<a class="pill" href="#method"><i class="fa-solid fa-diagram-project"></i> Method</a>-->
+        <a class="pill" href="#datasets"><i class="fa-solid fa-database"></i> Datasets</a>
+        <!--<a class="pill" href="#training"><i class="fa-solid fa-chart-line"></i> Training</a>-->
+        <!--<a class="pill" href="#demos"><i class="fa-solid fa-film"></i> Demos</a>-->
+        <!--<a class="pill" href="#bibtex"><i class="fa-solid fa-code"></i> BibTeX</a>-->
+        <!--<a class="pill" href="https://anonymous2271106-a11y.github.io/PRISM/" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Project</a>-->
+        <a class="pill" href="https://github.com/anonymous2271106-a11y/PRISM" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i> Code</a>
+        <a class="pill" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener"><i class="fa-regular fa-file-pdf"></i> Paper</a>
+        <a class="pill" href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID" target="_blank" rel="noopener"><i class="fa-brands fa-youtube"></i> Video</a>
+      </div>
+    </nav>
+  </div>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-card">
+      <div class="subtitle">Anonymous Submission 
+      <!--· Under Review at ICLR 2026-->
+      </div>
+      <h1 class="title">PRISM: Performer RS‑IMLE for Multisensory Imitation Learning</h1>
+      <div class="badges" aria-label="highlights">
+        <span class="badge"><i class="fa-solid fa-bolt"></i> Single‑pass policy</span>
+        <span class="badge"><i class="fa-solid fa-wave-square"></i> Linear‑attention (Performer)</span>
+        <span class="badge"><i class="fa-solid fa-microchip"></i> Multisensory (RGB · Depth · Tactile · Audio · Proprio)</span>
+        <span class="badge"><i class="fa-solid fa-vial"></i> MetaWorld · CALVIN · Robomimic · Hardware</span>
+      </div>
+      <div class="metrics" role="list">
+        <div class="metric" role="listitem"><div class="n">10–25% ↑</div><div class="l">Real‑world success vs diffusion</div></div>
+        <div class="metric" role="listitem"><div class="n">~50× ↓</div><div class="l">Jerk reduction (CALVIN 10%)</div></div>
+        <div class="metric" role="listitem"><div class="n">5–12% ↑</div><div class="l">MetaWorld Hard/Very‑Hard</div></div>
+        <div class="metric" role="listitem"><div class="n">1‑step</div><div class="l">No iterative sampling</div></div>
+      </div>
     </div>
-
-    <h2>Resources</h2>
-    <ul>
-      <li><a href="https://anonymous2271106-a11y.github.io/PRISM/" target="_blank">Project Page</a></li>
-      <li><a href="https://github.com/anonymous2271106-a11y/PRISM" target="_blank">Code (GitHub)</a></li>
-      <li><a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank">Paper (ArXiv)</a></li>
-      <li><a href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID" target="_blank">Video</a></li>
-    </ul>
-
-    <h2>BibTeX</h2>
-    <pre>
-@inproceedings{anonymous2026prism,
+  </header>
+  <!-- ABSTRACT -->
+  <section id="abstract" class="section">
+    <h2 class="h2"><i class="fa-regular fa-file-lines"></i> Abstract</h2>
+    <div class="panel">
+      <p>
+        Robotic imitation learning typically requires models that capture multimodal action distributions while operating in real‑time control rates and accommodating multiple sensing modalities. Although recent generative approaches such as diffusion models, flow matching, and Implicit Maximum Likelihood Estimation (IMLE) have achieved promising results in this domain, they satisfy only a subset of these requirements. To satisfy these requirements, we introduce <strong>PRISM</strong>, based on a batch‑global rejection‑sampling variant of IMLE. PRISM is a single‑pass policy that couples a temporal multisensory encoder (e.g., RGB, Depth, tactile, audio, proprioception) with a linear‑attention generator using a Performer architecture. We validate on MetaWorld, CALVIN, Robomimic, and a real hardware suite using a Unitree GO2 with a 7‑DoF arm, wrist and shoulder RGB, tactile, audio, and proprioception sensors. PRISM matches or outperforms diffusion, flow‑matching, and prior IMLE policies in terms of task success rates, robustness, and sample efficiency. In CALVIN with 10% of the data, PRISM improves the success rate by ∼10% over IMLE, ∼20% over flow matching, and ∼25% over diffusion, while reducing the jerk by about 20×. On MetaWorld, PRISM is 5–12% on Hard/Very‑Hard splits over diffusion and flow baselines. Real‑world loco‑manipulation shows 10–25% higher success and maintains faster inference compared to diffusion policy. These results position PRISM as a fast, accurate, and multisensory imitation policy that retains multimodal action coverage without iterative sampling.
+      </p>
+    </div>
+  </section>
+  <!-- METHOD -->
+  <section id="method" class="section">
+    <h2 class="h2"><i class="fa-solid fa-diagram-project"></i> Method Overview</h2>
+    <figure class="panel">
+      <img src="static/figure1.png" alt="Model Overview diagram for PRISM (Performer RS‑IMLE)." />
+      <figcaption>PRISM couples a temporal multisensory encoder with a linear‑attention generator (Performer) and a batch‑global RS‑IMLE objective.</figcaption>
+    </figure>
+  </section>
+  <!-- DATASETS -->
+  <section id="datasets" class="section">
+    <h2 class="h2"><i class="fa-solid fa-database"></i> Benchmark Datasets</h2>
+    <figure class="panel">
+      <img src="static/imle_dataset_intro.png" alt="Dataset modalities for MetaWorld, CALVIN, and Robomimic." />
+      <figcaption>MetaWorld · CALVIN · Robomimic with wrist/shoulder RGB, depth, tactile, audio, and proprioception.</figcaption>
+    </figure>
+  </section>
+  <!-- TRAINING -->
+  <section id="training" class="section">
+    <h2 class="h2"><i class="fa-solid fa-chart-line"></i> Training Loss Visualization</h2>
+    <figure class="panel">
+      <img src="static/fig_c1_rsimle_flow.svg" alt="Loss curves comparing RS‑IMLE and flow." />
+      <figcaption>Loss traces during training under the RS‑IMLE objective compared to flow‑matching variants.</figcaption>
+    </figure>
+  </section>
+  <!-- DEMOS -->
+  <section id="demos" class="section">
+    <h2 class="h2"><i class="fa-solid fa-film"></i> Demo Videos</h2>
+    <div class="grid grid-3">
+      <div class="video-card">
+        <video controls preload="metadata">
+          <source src="static/demo_sim.mp4" type="video/mp4" />
+        </video>
+        <div class="vcap">Simulation rollout</div>
+      </div>
+      <div class="video-card">
+        <video controls preload="metadata">
+          <source src="static/demo_real1.mp4" type="video/mp4" />
+        </video>
+        <div class="vcap">Hardware: loco‑manipulation (Unitree GO2 + 7‑DoF arm)</div>
+      </div>
+      <div class="video-card">
+        <video controls preload="metadata">
+          <source src="static/demo_real2.mp4" type="video/mp4" />
+        </video>
+        <div class="vcap">Hardware: multisensory policy execution</div>
+      </div>
+    </div>
+  </section>
+  <!-- BIBTEX -->
+  <section id="bibtex" class="section">
+    <h2 class="h2"><i class="fa-solid fa-code"></i> BibTeX</h2>
+    <div class="panel">
+      <div class="codebar">
+        <span class="label">Cite PRISM</span>
+        <button class="copy-btn" data-copy-target="#bib">Copy</button>
+      </div>
+      <pre id="bib">@inproceedings{anonymous2026prism,
   title     = {PRISM: Performer RS-IMLE for Multisensory Imitation Learning},
   booktitle = {International Conference on Learning Representations (ICLR)},
   year      = {2026}
-}
-    </pre>
-  </div>
+}</pre>
+    </div>
+  </section>
+  <footer class="footer">
+    <p>© 2025 PRISM (Anonymous submission). Links: <a href="https://anonymous2271106-a11y.github.io/PRISM/" target="_blank" rel="noopener">Project</a> · <a href="https://github.com/anonymous2271106-a11y/PRISM" target="_blank" rel="noopener">Code</a> · <a href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank" rel="noopener">Paper</a> · <a href="https://www.youtube.com/watch?v=YOUR_VIDEO_ID" target="_blank" rel="noopener">Video</a></p>
+  </footer>
+  <script>
+    // Copy to clipboard for BibTeX
+    const btn = document.querySelector('.copy-btn');
+    btn?.addEventListener('click', () => {
+      const target = document.querySelector(btn.dataset.copyTarget);
+      if (!target) return;
+      const text = target.textContent.trim();
+      navigator.clipboard.writeText(text).then(() => {
+        const old = btn.textContent; btn.textContent = 'Copied!';
+        setTimeout(() => (btn.textContent = old), 1300);
+      });
+    });
+  </script>
 </body>
 </html>
+
+
+cAn you make this l;ess cluttered.
